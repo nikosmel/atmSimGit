@@ -2,6 +2,8 @@ package com.nikosmel;
 
 import com.nikosmel.services.AtmService;
 
+import java.util.Locale;
+
 /**
  * Atm Simulator
  *

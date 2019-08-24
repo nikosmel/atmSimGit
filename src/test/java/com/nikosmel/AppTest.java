@@ -29,7 +29,6 @@ public class AppTest
     @Test
     public void shouldBeUpToZero()
     {
-        provideInput(4);
-       // assertTrue(InputService.getNumber("",300) > 0);
+       assertTrue(InputService.getNumber("","",300) > 0);
     }
 }
