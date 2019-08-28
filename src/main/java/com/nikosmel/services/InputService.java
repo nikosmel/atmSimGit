@@ -1,11 +1,24 @@
 package com.nikosmel.services;
 
+import com.nikosmel.resources.Messages;
+
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class InputService {
-    public static int getNumber(String s ,String s2 ,int max_number) {
-        final Scanner in = new Scanner(System.in);
+
+    static Scanner in ;
+
+    /**
+     * @param s message for input
+     * @param s2 message for wrong input
+     * @param max_number
+     * @return
+     */
+    static int getNumber(String s, String s2, int max_number) {
+        if(in == null) {
+            in = new Scanner(System.in);
+        }
         int inputInt;
         do {  // Loop until we have correct input
             System.out.print(s);
@@ -18,11 +31,18 @@ public class InputService {
                     continue; // restart loop, wrong number
                 }
             } catch (final InputMismatchException e) {
-                System.out.println("You have entered an invalid input. Try again.");
+                System.out.println(Messages.INVALID_INPUT);
                 in.next();    // discard non-int input
                 continue;     // restart loop, didn't get an integer input
             }
         } while (true);
         return inputInt;
+    }
+
+    /**
+     * @return int , the number of the desired option.
+     */
+    static int getOption(){
+        return getNumber(Messages.GET_OPTIONS,Messages.ERROR_OPTION,3);
     }
 }

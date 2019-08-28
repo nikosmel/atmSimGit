@@ -1,93 +1,84 @@
 package com.nikosmel.services;
 
-import com.nikosmel.classes.Atm;
+import com.nikosmel.model.Atm;
+import com.nikosmel.model.NoteEnum;
+import com.nikosmel.resources.Messages;
 
 import java.util.*;
 
 public class AtmService {
 
-    public static void runAtmSimulator(){
+    /**
+     * Main function ,loop until user exit.
+     */
+    public static void runAtmSimulator() {
         Atm atm = initAtm();
-        //cashDispensingProcess(atm);
+        System.out.println(Messages.ATM_SIMULATOR);
         do {  // Loop until we have correct input
             try {
-                getAction();
-                doAction(atm);
+                processOption(atm, InputService.getOption());
             } catch (final InputMismatchException e) {
-                System.out.println("You have entered an invalid input. Try again.");
+                System.out.println(Messages.INVALID_INPUT);
                 continue;     // restart loop, didn't get an integer input
             }
         } while (true);
     }
 
-    private static Atm initAtm() {
-        return Atm.initializeAtm(
+    /**
+     * Initialize Atm with the desired available notes.
+     * @return
+     */
+    static Atm initAtm() {
+        return Atm.initializeAtm(new int[]{
                 InputService.getNumber(
-                        "Please insert the number of the available 20 notes : " ,
-                        "You have not entered a number between 0 and "+ Atm.getMax_numberOf_20_notes() +". Try again.",
-                        Atm.getMax_numberOf_20_notes()),
+                        Messages.INSERT_AVAILABLE_20_NOTES,
+                        Messages.INPUT_NOT_BETWEEN_0_MAX,
+                        Atm.getMax_numberOfNotes()),
                 InputService.getNumber(
-                        "Please insert the number of the available 50 notes : ",
-                        "You have not entered a number between 0 and "+ Atm.getMax_numberOf_50_notes() +". Try again.",
-                        Atm.getMax_numberOf_50_notes()));
+                        Messages.INSERT_AVAILABLE_50_NOTES,
+                        Messages.INPUT_NOT_BETWEEN_0_MAX,
+                        Atm.getMax_numberOfNotes())
+        });
     }
 
-    private static int getAction(){
-        return InputService.getNumber(
-                "If you like tou dispense money please press number : 1 \n" +
-                        "If you like tou see  the amount of notes please press number : 2 \n" +
-                        "If you like tou exit please press number : 3 \n",
-                "You have not entered a number between 0 and 3 . Try again.",
-                3);
+    /**
+     * reduceNotes use tempAtmAmount to check if the combination may cause invalid changes.
+     * @param combination
+     * @param atm
+     * @return false if the process was invalid and true for valid changes.
+     */
+    static boolean reduceNotes(int[] combination,Atm atm){
+        int[] tempAtmAmount = atm.getAmountOfNotes().clone();
+        for (NoteEnum note : NoteEnum.values()) {
+            if(tempAtmAmount[note.getKey()] - combination[note.getKey()] < 0){
+                return false;
+            }
+            tempAtmAmount[note.getKey()] = tempAtmAmount[note.getKey()] - combination[note.getKey()];
+        }
+        atm.setAmountOfNotes(tempAtmAmount.clone());
+        return true;
     }
 
-    private static void doAction(Atm atm){
-        int input = InputService.getNumber(
-                "If you like tou dispense money please press number : 1 \n" +
-                        "If you like tou see  the amount of notes please press number : 2 \n" +
-                        "If you like tou exit please press number : 3 \n",
-                "You have not entered a number between 0 and 3 . Try again.",
-                3);
-        switch (input){
+    /**
+     * Process the selected option
+     * 1. withdraw
+     * 2. view amount of notes
+     * 3. exit
+     * @param atm
+     * @param actionInput
+     */
+    static void processOption(Atm atm, int actionInput){
+        switch (actionInput){
             case 1:
-                cashDispensingProcess(atm);
+                WithdrawService.cashWithdrawalProcess(atm);
                 break;
             case 2:
-                Map<Integer, Integer> map = getTheCombination(input,atm);
-                System.out.println("you can draw "+ map.get(20) + " of 20 notes .");
-                System.out.println("you can draw "+ map.get(50) + " of 50 notes .");
+                atm.printTheAmountOfTheNotes();
                 break;
             case 3:
                 System.exit(0);
                 break;
         }
-    }
-
-    private static void cashDispensingProcess(Atm atm){
-        int input = InputService.getNumber(
-                "Please enter the amount you want to withdraw : ",
-                "You have not entered a number between 0 and "+ Atm.getMax_numberOf_50_notes() +". Try again.",
-                Atm.getMax_dispense());
-        Map<Integer, Integer> map = getTheCombination(input,atm);
-        if(!map.isEmpty()){
-            System.out.println("you can draw "+ map.get(20) + " of 20 notes .");
-            System.out.println("you can draw "+ map.get(50) + " of 50 notes .");
-        }else{
-            System.out.println("Process can't be satisfied");
-        }
-
-    }
-
-    static Map<Integer, Integer> getTheCombination(int userInput, Atm atm){
-        Map<Integer, Integer> map = new HashMap<>();
-        int atmMaxCashValue = atm.getNumberOf_20_notes() * 20 + atm.getNumberOf_50_notes() * 50 ;
-        if(atmMaxCashValue < userInput){
-            System.out.println("Atm doesn't have so many notes!");
-            return map;
-        }
-        map.put(20,3);
-        map.put(50,5);
-        return map;
     }
 
 

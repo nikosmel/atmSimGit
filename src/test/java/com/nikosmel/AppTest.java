@@ -14,21 +14,5 @@ import java.io.InputStream;
  */
 public class AppTest 
 {
-    private void provideInput(final int in) {
-        InputStream testIn = new InputStream() {
-            @Override
-            public int read() throws IOException {
-                return in;
-            }
-        };
-        System.setIn(testIn);
-    }
-    /**
-     * Rigorous Test :-)
-     */
-    @Test
-    public void shouldBeUpToZero()
-    {
-       assertTrue(InputService.getNumber("","",300) > 0);
-    }
+
 }
