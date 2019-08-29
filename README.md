@@ -3,9 +3,13 @@
 ## Backend Developer Test – ATM Simulation			
 
 The application has been written in Java.
+
 Command line App
+
 JDK 1.8.0
+
 Junit 4 for testing 
+
 Maven
 
 ### Instructions on how to build and run the application.
@@ -35,8 +39,11 @@ Select option:
 …
 
 In case you need to build the application again:
+
 -checkout the project 
+
 -open source folder as maven project
+
 -edit run/debug configurations and run or build the application .
 
 ### About the code .
