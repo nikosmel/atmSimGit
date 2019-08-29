@@ -11,14 +11,16 @@ Maven
 ### Instructions on how to build and run the application.
 
 This test was developed in mac os and Intellij IDEA was used.
-The delivered folder contains Instructions file, atmSim.jar file and a folder atmSimSource with the source code.
 
-To run the application open terminal and navigate to the testAssigment folder .
-Run “java -jar atmSim.jar” .
-Application started.. 
+To run the application you can download the atmSim.jar file and run the application using terminal.
+Navigate to the downloads folder and run “java -jar atmSim.jar” .
+
+The application has started ... 
 
 The next message has appeared and wait for the user input .
+
 “Please insert the number of the available 20 notes : “ 
+
 “Please insert the number of the available 50 notes : “
 
 After that the ATM has initialised and it’s ready for the next actions.
@@ -33,9 +35,9 @@ Select option:
 …
 
 In case you need to build the application again:
--open intellij IDEA 
+-checkout the project 
 -open source folder as maven project
--edit run/debug configurations and run or build the application .
+-edit run/debug configurations and run or build the application .
 
 ### About the code .
 In order to complete the assignment i tried to keep the source code as simple as possible.
